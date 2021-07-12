@@ -1,0 +1,13 @@
+
+
+func dateDifference() {
+        let startDate = "2000-11-22"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let formatedStartDate = dateFormatter.date(from: startDate)
+        let currentDate = Date()
+        let components = Set<Calendar.Component>([.second, .minute, .hour, .day, .month, .year])
+        let differenceOfDate = Calendar.current.dateComponents(components, from: formatedStartDate, to: currentDate)
+
+        print(differenceOfDate)
+}

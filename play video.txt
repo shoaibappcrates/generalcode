@@ -1,0 +1,42 @@
+
+
+play video in a view named "videoView"
+
+		// to play video exists locally in project video must be added to -> your Target -> Build Phases -> Copy Bundle Resources if video is not there already, then click plus button to add.
+		
+		guard let path = Bundle.main.path(forResource: "video", ofType:"mp4") else {
+            debugPrint("video not found")
+            return
+        }
+        
+    	let player = AVPlayer(url: URL(fileURLWithPath: path))
+
+    	let playerLayer = AVPlayerLayer(player: player)
+    	playerLayer.frame = self.videoView.bounds
+    	self.videoView.layer.addSublayer(playerLayer)
+    	player.play()
+
+
+
+play video in a view named "videoView" with player view controller
+
+		guard let path = Bundle.main.path(forResource: "video", ofType:"mp4") else {
+            debugPrint("video not found")
+            return
+        }
+
+
+		let url = URL(fileURLWithPath: path)
+        let player = AVPlayer(url: url)
+
+        let avPlayerViewController = AVPlayerViewController()
+        avPlayerViewController.player = player
+        avPlayerViewController.view.frame = CGRect(x: 0, y: 0, width: videoView.frame.size.width, height: videoView.frame.size.height )
+
+
+        self.addChild(avPlayerViewController)
+        self.videoView.addSubview(avPlayerViewController.view)
+        avPlayerViewController.didMove(toParent: self)
+        avPlayerViewController.player?.play()
+
+

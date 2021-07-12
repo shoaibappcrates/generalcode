@@ -1,0 +1,63 @@
+How to add pan gesture (right left up down)
+
+
+let swipeGestures = setupSwipeGestures()
+setupPanGestures(swipeGestures: swipeGestures)
+
+
+private func setupSwipeGestures() -> [UISwipeGestureRecognizer] {
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeScrollView))
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeScrollView))
+        
+        swipeUp.direction = .up
+        swipeDown.direction = .down
+        
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeScrollView))
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipeScrollView))
+        
+        swipeLeft.direction = .left
+        swipeRight.direction = .right
+        
+        blackView.addGestureRecognizer(swipeUp)
+        blackView.addGestureRecognizer(swipeDown)
+        
+        blackView.addGestureRecognizer(swipeLeft)
+        blackView.addGestureRecognizer(swipeRight)
+
+        return [swipeUp, swipeDown, swipeLeft, swipeRight]
+}
+
+private func setupPanGestures(swipeGestures: [UISwipeGestureRecognizer]) {
+        let panGesture = UIPanGestureRecognizer.init(target: self, action:#selector(self.handleSwipeScrollView))
+        for swipeGesture in swipeGestures {
+            panGesture.require(toFail: swipeGesture)
+        }
+        blackView.addGestureRecognizer(panGesture)
+}
+
+@objc func handleSwipeScrollView(_ recognizer: UISwipeGestureRecognizer) {
+        print("Did Swipe")
+        if recognizer.direction == .left {
+            print("Did Swipe Left")
+            if self.onIndex != (post.postAttachments.count - 1) {
+                self.onIndex = self.onIndex + 1
+                collectionView.scrollToItem(at:IndexPath(item: onIndex, section: 0), at: .right, animated: true)
+                callAfterScroll()
+            }
+        }
+        else if recognizer.direction == .right {
+            print("Did Swipe Right")
+            if self.onIndex != 0 {
+                self.onIndex = self.onIndex - 1
+                collectionView.scrollToItem(at:IndexPath(item: onIndex, section: 0), at: .right, animated: true)
+                callAfterScroll()
+            }
+        }
+        else if recognizer.direction == .up {
+            print("Did Swipe Up")
+        }
+        else if recognizer.direction == .down {
+            print("Did Swipe Down")
+        }
+        
+    }
